@@ -1,2 +1,28 @@
-1:
-  name: "测试"
+'1':
+  name: "§2测试"
+  command: '1'
+  column: 2
+  slot:
+    a:
+	  name: §cGUI1
+	  lore:
+	  - §a第1条a
+	  - §b第2条b
+	  - §c第3条c
+	  - §d第4条d
+	  - §e第5条e
+	  - §1第6条1
+	  - §2第7条2
+	  - §3第8条3
+	  - §4第9条5
+	  - §5第10条5
+	  item: GLASS
+	  damage: 0
+	  function: tp 1
+    a:
+	  name: §cGUI2
+	  lore:
+	  - §a{1}个玩家
+	  item: DIRT
+	  damage: 2
+	  function: null

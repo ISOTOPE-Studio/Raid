@@ -81,6 +81,7 @@ public class Raid extends JavaPlugin {
 		if (GUIDataFile == null) {
 			this.saveResource("GUI.yml", false);
 		}
+		GUIDataFile = new File(getDataFolder(), "GUI.yml");
 		GUIData = YamlConfiguration.loadConfiguration(GUIDataFile);
 	}
 
