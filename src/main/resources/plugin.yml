@@ -9,4 +9,7 @@ commands:
   Raid:
     description: Raid Command.
     usage: /<command>
-#    aliases: rpg
+    aliases: fuben
+  Raidadmin:
+    description: Raid Command.
+    usage: /<command>

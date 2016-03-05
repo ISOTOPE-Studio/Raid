@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import cc.isotopestudio.Raid.command.CommandRaid;
+import cc.isotopestudio.Raid.command.CommandRaidadmin;
 import cc.isotopestudio.Raid.task.UpdateGUI;
 
 public class Raid extends JavaPlugin {
@@ -54,7 +55,7 @@ public class Raid extends JavaPlugin {
 		// pm.registerEvents(new RaidListener(this), this);
 
 		this.getCommand("raid").setExecutor(new CommandRaid());
-
+		this.getCommand("raidadmin").setExecutor(new CommandRaidadmin(this));
 		// ConfigData.updateConfig(this);
 
 		// BukkitTask task = new UpdateGUI(this).runTaskLater(this, 10);
