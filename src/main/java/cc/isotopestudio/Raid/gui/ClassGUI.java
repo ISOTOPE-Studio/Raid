@@ -21,14 +21,14 @@ public class ClassGUI implements Listener {
 
 	private String name;
 	private int size;
-	private OptionClickEventHandler handler;
+	private OptionClickEventHandler[] handler;
 	private Plugin plugin;
 	private String[] optionNames;
 	private ItemStack[] optionIcons;
 	private boolean willDestory;
 	private ArrayList<Integer> clickList;
 
-	public ClassGUI(String name, int size, OptionClickEventHandler handler, Plugin plugin) {
+	public ClassGUI(String name, int size, OptionClickEventHandler[] handler, Plugin plugin) {
 		this.name = name;
 		this.size = size;
 		this.handler = handler;
@@ -39,25 +39,10 @@ public class ClassGUI implements Listener {
 		willDestory = false;
 	}
 
-	public ClassGUI(String name, int size, OptionClickEventHandler handler, Plugin plugin, boolean willDestory) {
-		this.name = name;
-		this.size = size;
-		this.handler = handler;
-		this.plugin = plugin;
-		this.optionNames = new String[size];
-		this.optionIcons = new ItemStack[size];
-		plugin.getServer().getPluginManager().registerEvents(this, plugin);
-		this.willDestory = willDestory;
-	}
-
 	public ClassGUI setOption(int position, ItemStack icon, String name, String... info) {
 		optionNames[position] = name;
 		optionIcons[position] = setItemNameAndLore(icon, name, info);
 		return this;
-	}
-
-	public void setHandler(OptionClickEventHandler handler) {
-		this.handler = handler;
 	}
 
 	public void open(Player player) {
@@ -105,7 +90,7 @@ public class ClassGUI implements Listener {
 			if (ifValueExist(slot) && optionNames[slot] != null) {
 				Plugin plugin = this.plugin;
 				OptionClickEvent e = new OptionClickEvent((Player) event.getWhoClicked(), slot, optionNames[slot]);
-				handler.onOptionClick(e);
+				//handler.onOptionClick(e);
 				if (e.willClose()) {
 					final Player p = (Player) event.getWhoClicked();
 					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -113,9 +98,6 @@ public class ClassGUI implements Listener {
 							p.closeInventory();
 						}
 					}, 1);
-				}
-				if (e.willDestroy()) {
-					Destory();
 				}
 			}
 		}

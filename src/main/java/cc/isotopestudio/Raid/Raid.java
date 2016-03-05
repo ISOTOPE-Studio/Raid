@@ -11,12 +11,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import cc.isotopestudio.Raid.command.CommandRaid;
+import cc.isotopestudio.Raid.task.UpdateGUI;
 
 public class Raid extends JavaPlugin {
 
-	public static final String prefix = (new StringBuilder()).append(ChatColor.GREEN).append("[")
-			.append(ChatColor.ITALIC).append(ChatColor.BOLD).append("副本传送").append(ChatColor.RESET)
-			.append(ChatColor.GREEN).append("]").append(ChatColor.RESET).toString();
+	public static final String prefix = (new StringBuilder()).append(ChatColor.RED).append("[副本系统]")
+			.append(ChatColor.GREEN).toString();
 
 	public void createFile(String name) {
 
@@ -57,9 +57,9 @@ public class Raid extends JavaPlugin {
 
 		// ConfigData.updateConfig(this);
 
-		// BukkitTask task = new MagicRefillTask(this).runTaskTimer(this, 20,
-		// ConfigData.magicRefillRate * 20);
-
+		// BukkitTask task = new UpdateGUI(this).runTaskLater(this, 10);
+		UpdateGUI task = new UpdateGUI(this);
+		task.run();
 		getLogger().info("Raid 成功加载!");
 		getLogger().info("Raid 由ISOTOPE Studio制作!");
 		getLogger().info("http://isotopestudio.cc");
@@ -67,6 +67,9 @@ public class Raid extends JavaPlugin {
 
 	public void onReload() {
 		// ConfigData.updateConfig(this);
+		reloadGUIData();
+		reloadInstanceData();
+		// BukkitTask task = new UpdateGUI(this).runTaskLater(this, 10);
 	}
 
 	@Override

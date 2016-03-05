@@ -25,8 +25,8 @@ public class FileUtil {
 
 	public Location getInstancePos2(int instance) {
 		double x = getInstanceValue(instance, "pos2.x");
-		double y = getInstanceValue(instance, "pos3.y");
-		double z = getInstanceValue(instance, "pos4.z");
+		double y = getInstanceValue(instance, "pos2.y");
+		double z = getInstanceValue(instance, "pos2.z");
 		Location loc = new Location(getInstanceWorld(instance), x, y, z);
 		return loc;
 	}
