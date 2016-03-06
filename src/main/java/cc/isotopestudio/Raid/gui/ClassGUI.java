@@ -2,6 +2,8 @@ package cc.isotopestudio.Raid.gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +17,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
+import cc.isotopestudio.Raid.Raid;
+import cc.isotopestudio.Raid.data.InstanceData;
+
 public class ClassGUI implements Listener {
 
 	// From: https://bukkit.org/threads/icon-menu.108342
@@ -22,16 +27,15 @@ public class ClassGUI implements Listener {
 	private String name;
 	private int size;
 	private OptionClickEventHandler[] handler;
-	private Plugin plugin;
+	private Raid plugin;
 	private String[] optionNames;
 	private ItemStack[] optionIcons;
 	private boolean willDestory;
-	private ArrayList<Integer> clickList;
+	private ArrayList<Integer> playerList;
 
-	public ClassGUI(String name, int size, OptionClickEventHandler[] handler, Plugin plugin) {
+	public ClassGUI(String name, int size, Raid plugin) {
 		this.name = name;
 		this.size = size;
-		this.handler = handler;
 		this.plugin = plugin;
 		this.optionNames = new String[size];
 		this.optionIcons = new ItemStack[size];
@@ -47,6 +51,7 @@ public class ClassGUI implements Listener {
 
 	public void open(Player player) {
 		Inventory inventory = Bukkit.createInventory(player, size, name);
+		updateLore();
 		for (int i = 0; i < optionIcons.length; i++) {
 			if (optionIcons[i] != null) {
 				inventory.setItem(i, optionIcons[i]);
@@ -63,16 +68,45 @@ public class ClassGUI implements Listener {
 		optionIcons = null;
 	}
 
-	public void setClickList(ArrayList<Integer> list) {
-		clickList = list;
+	public void setPleyerList(ArrayList<Integer> list) {
+		this.playerList = list;
 	}
 
-	private boolean ifValueExist(int n) {
-		for (int i : clickList) {
-			if (i == n)
-				return true;
+	public void setHandlerList(OptionClickEventHandler[] handler) {
+		this.handler = handler;
+	}
+
+	private void updateLore() {
+		for (int i : playerList) {
+			ItemMeta meta = optionIcons[i].getItemMeta();
+			List<String> lore = meta.getLore();
+			for (int line = 0; line < lore.size(); line++) {
+				String temp = lore.get(line);
+				if (temp.contains("{") && temp.contains("}")) {
+					int start = 0, end = 0;
+					for (int pos = 0; pos < temp.length(); pos++) {
+						if (temp.charAt(pos) == '{') {
+							start = pos + 1;
+						}
+						if (temp.charAt(pos) == '}') {
+							end = pos;
+						}
+					}
+					int instance = -1;
+					try {
+						instance = Integer.parseInt(temp.substring(start, end));
+					} catch (Exception e) {
+
+					}
+					InstanceData data = new InstanceData(plugin);
+					temp = temp.replace("{" + temp.substring(start, end) + "}", "" + data.getNumPlayers(instance));
+					System.out.println(temp);
+					lore.set(line, temp);
+				}
+			}
+			meta.setLore(lore);
+			optionIcons[i].setItemMeta(meta);
 		}
-		return false;
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -80,17 +114,13 @@ public class ClassGUI implements Listener {
 		if (event.getInventory().getTitle().equals(name)) {
 			event.setCancelled(true);
 			int slot = event.getRawSlot();
-			if (clickList == null) {
-				clickList = new ArrayList<Integer>();
+			if (slot < 0 || slot >= size) {
+				return;
 			}
-			clickList.add(1);
-			clickList.add(2);
-			clickList.add(3);
-			clickList.add(4);
-			if (ifValueExist(slot) && optionNames[slot] != null) {
+			if (handler[slot] != null && optionNames[slot] != null) {
 				Plugin plugin = this.plugin;
 				OptionClickEvent e = new OptionClickEvent((Player) event.getWhoClicked(), slot, optionNames[slot]);
-				//handler.onOptionClick(e);
+				handler[slot].onOptionClick(e);
 				if (e.willClose()) {
 					final Player p = (Player) event.getWhoClicked();
 					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {

@@ -29,7 +29,7 @@ public class CommandRaidadmin implements CommandExecutor {
 				sender.sendMessage(Raid.prefix + "你没有权限");
 				return true;
 			}
-			if (args.length != 2) {
+			if (!(args.length == 2 || args.length == 3)) {
 				sender.sendMessage(Raid.prefix + "/raidadmin <副本ID> pos1 - 设置第一个坐标点");
 				sender.sendMessage(Raid.prefix + "/raidadmin <副本ID> pos2 - 设置第二个坐标点");
 				sender.sendMessage(Raid.prefix + "/raidadmin <副本ID> tp - 设置传送点");
@@ -58,6 +58,10 @@ public class CommandRaidadmin implements CommandExecutor {
 			if (args[1].equalsIgnoreCase("tp")) {
 				data.setInstancetp(num, loc);
 				sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的传送点");
+			}
+			if (args[1].equalsIgnoreCase("limit")) {
+				data.setInstanceLimit(num, Integer.parseInt(args[2]));
+				sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的玩家限制");
 			}
 			return true;
 		}

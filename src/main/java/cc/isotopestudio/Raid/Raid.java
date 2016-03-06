@@ -51,26 +51,20 @@ public class Raid extends JavaPlugin {
 			return;
 		}
 
-		// PluginManager pm = this.getServer().getPluginManager();
-		// pm.registerEvents(new RaidListener(this), this);
-
 		this.getCommand("raid").setExecutor(new CommandRaid());
 		this.getCommand("raidadmin").setExecutor(new CommandRaidadmin(this));
-		// ConfigData.updateConfig(this);
+		int freq = getConfig().getInt("update", 20);
+		BukkitTask task = new UpdateGUI(this).runTaskTimer(this, 20, freq);
 
-		// BukkitTask task = new UpdateGUI(this).runTaskLater(this, 10);
-		UpdateGUI task = new UpdateGUI(this);
-		task.run();
 		getLogger().info("Raid 成功加载!");
 		getLogger().info("Raid 由ISOTOPE Studio制作!");
 		getLogger().info("http://isotopestudio.cc");
 	}
 
 	public void onReload() {
-		// ConfigData.updateConfig(this);
 		reloadGUIData();
 		reloadInstanceData();
-		// BukkitTask task = new UpdateGUI(this).runTaskLater(this, 10);
+		BukkitTask task = new UpdateGUI(this).runTaskTimer(this, 20, 20);
 	}
 
 	@Override

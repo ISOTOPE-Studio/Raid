@@ -27,11 +27,11 @@ public class CommandRaid implements CommandExecutor {
 			} catch (Exception e) {
 				sender.sendMessage(Raid.prefix + "/raid <数字> 打开菜单");
 			}
-			try {
+			//try {
 				Data.gui.get(num).open((Player) sender);
-			} catch (Exception e) {
-				sender.sendMessage(Raid.prefix + "菜单不存在");
-			}
+			//} catch (Exception e) {
+			//	sender.sendMessage(Raid.prefix + "菜单不存在");
+			//}
 			return true;
 		}
 		return false;
