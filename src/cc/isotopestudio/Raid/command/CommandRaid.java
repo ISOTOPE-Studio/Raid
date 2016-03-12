@@ -17,21 +17,22 @@ public class CommandRaid implements CommandExecutor {
 				sender.sendMessage(Raid.prefix + "必须要玩家才能执行");
 				return true;
 			}
+			Player player = (Player) sender;
 			if (args.length != 1) {
-				sender.sendMessage(Raid.prefix + "/raid <数字> 打开菜单");
+				player.sendMessage(Raid.prefix + "/raid <数字> 打开菜单");
 				return true;
 			}
 			int num = 0;
 			try {
 				num = Integer.parseInt(args[0]);
 			} catch (Exception e) {
-				sender.sendMessage(Raid.prefix + "/raid <数字> 打开菜单");
+				player.sendMessage(Raid.prefix + "/raid <数字> 打开菜单");
 			}
-			//try {
-				Data.gui.get(num).open((Player) sender);
-			//} catch (Exception e) {
-			//	sender.sendMessage(Raid.prefix + "菜单不存在");
-			//}
+			try {
+				Data.gui.get(num).open(player);
+			} catch (Exception e) {
+				sender.sendMessage(Raid.prefix + "菜单不存在");
+			}
 			return true;
 		}
 		return false;

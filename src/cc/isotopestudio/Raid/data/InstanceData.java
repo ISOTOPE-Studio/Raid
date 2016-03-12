@@ -3,6 +3,7 @@ package cc.isotopestudio.Raid.data;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -66,7 +67,7 @@ public class InstanceData {
 	}
 
 	public int getInstanceLimit(int instance) {
-		return plugin.getInstanceData().getInt(instance + ".limit", 5);
+		return plugin.getInstanceData().getInt(instance + ".limit", Integer.MAX_VALUE);
 	}
 
 	public void setInstanceLimit(int instance, int limit) {
@@ -112,14 +113,17 @@ public class InstanceData {
 		List<Player> players = getInstanceWorld(instance).getPlayers();
 		for (Player player : players) {
 			Location loc = player.getLocation();
-			//System.out.println(loc.getBlockX() + " " + bound[0][0] + " " + loc.getBlockX() + " " + bound[1][0]);
-			if (loc.getBlockX() <= bound[0][0] || loc.getBlockX() >= bound[1][0])
+			// System.out.println(loc.getBlockX() + " " + bound[0][0] + " " +
+			// loc.getBlockX() + " " + bound[1][0]);
+			if (loc.getBlockX() < bound[0][0] || loc.getBlockX() > bound[1][0])
 				continue;
-			//System.out.println(loc.getBlockY() + " " + bound[0][1] + " " + loc.getBlockY() + " " + bound[1][1]);
-			if (loc.getBlockY() <= bound[0][1] || loc.getBlockY() >= bound[1][1])
+			// System.out.println(loc.getBlockY() + " " + bound[0][1] + " " +
+			// loc.getBlockY() + " " + bound[1][1]);
+			if (loc.getBlockY() < bound[0][1] || loc.getBlockY() > bound[1][1])
 				continue;
-			//System.out.println(loc.getBlockZ() + " " + bound[0][2] + " " + loc.getBlockZ() + " " + bound[1][2]);
-			if (loc.getBlockZ() <= bound[0][2] || loc.getBlockZ() >= bound[1][2])
+			// System.out.println(loc.getBlockZ() + " " + bound[0][2] + " " +
+			// loc.getBlockZ() + " " + bound[1][2]);
+			if (loc.getBlockZ() < bound[0][2] || loc.getBlockZ() > bound[1][2])
 				continue;
 			num++;
 		}

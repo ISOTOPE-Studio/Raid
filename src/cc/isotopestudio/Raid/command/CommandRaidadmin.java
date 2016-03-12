@@ -21,6 +21,12 @@ public class CommandRaidadmin implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("raidadmin")) {
+
+			if (args.length > 0 && args[0].equalsIgnoreCase("reload")) {
+				plugin.onReload();
+				sender.sendMessage(Raid.prefix + "成功重载");
+				return true;
+			}
 			if (!(sender instanceof Player)) {
 				sender.sendMessage(Raid.prefix + "必须要玩家才能执行");
 				return true;
@@ -33,6 +39,9 @@ public class CommandRaidadmin implements CommandExecutor {
 				sender.sendMessage(Raid.prefix + "/raidadmin <副本ID> pos1 - 设置第一个坐标点");
 				sender.sendMessage(Raid.prefix + "/raidadmin <副本ID> pos2 - 设置第二个坐标点");
 				sender.sendMessage(Raid.prefix + "/raidadmin <副本ID> tp - 设置传送点");
+				sender.sendMessage(Raid.prefix + "/raidadmin <副本ID> limit <数量> - 设置副本玩家限制");
+				sender.sendMessage(Raid.prefix + "/raidadmin reload - 重载配置文件");
+
 				return true;
 			}
 			int num = 0;
@@ -57,7 +66,7 @@ public class CommandRaidadmin implements CommandExecutor {
 			}
 			if (args[1].equalsIgnoreCase("tp")) {
 				data.setInstancetp(num, loc);
-				sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的传送点");
+				sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的进入传送点");
 			}
 			if (args[1].equalsIgnoreCase("limit")) {
 				data.setInstanceLimit(num, Integer.parseInt(args[2]));

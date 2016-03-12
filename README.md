@@ -8,3 +8,17 @@
 3.一个GUI界面是可以返回传送的位置的。
 
 4.除了打开权限给玩家，别的权限全部OP才能用
+
+##命令
+###玩家
+`/raid <菜单ID>` 打开菜单
+
+###管理员
+`/raidadmin <副本ID> pos1`
+
+`/raidadmin <副本ID> pos2` 设置两个顶点
+
+`/raidadmin <副本ID> tp` 设置传送点
+
+`/raidadmin <副本ID> limit <玩家数量>` 限制副本玩家数目
+

@@ -50,7 +50,7 @@ public class Raid extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-
+		
 		this.getCommand("raid").setExecutor(new CommandRaid());
 		this.getCommand("raidadmin").setExecutor(new CommandRaidadmin(this));
 		int freq = getConfig().getInt("update", 20);
@@ -65,6 +65,9 @@ public class Raid extends JavaPlugin {
 		reloadGUIData();
 		reloadInstanceData();
 		BukkitTask task = new UpdateGUI(this).runTaskTimer(this, 20, 20);
+		getLogger().info("Raid 成功加载!");
+		getLogger().info("Raid 由ISOTOPE Studio制作!");
+		getLogger().info("http://isotopestudio.cc");
 	}
 
 	@Override

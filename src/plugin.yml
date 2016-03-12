@@ -1,0 +1,15 @@
+name: Raid
+main: cc.isotopestudio.Raid.Raid
+
+author: Mars
+description: Teleporting
+website: http://isotopestudio.cc
+version: 2.0
+commands:
+  Raid:
+    description: Raid Command.
+    usage: /<command>
+    aliases: fuben
+  Raidadmin:
+    description: Raid Command.
+    usage: /<command>

@@ -75,6 +75,7 @@
       item: DIRT
       damage: 2
       pos: 1
+      function: null
     C:
       name: ¡ìcGUI2
       lore:
@@ -82,6 +83,7 @@
       item: WOOL
       damage: 2
       pos: 15
+      function: null
 '1':
   name: ¡ì2²âÊÔ2
   command: '1'
@@ -103,9 +105,12 @@
       item: GLASS
       damage: 0
       function: tp 1
+      pos: 5
     b:
       name: ¡ìcGUI2
       lore:
       - ¡ìa{1}¸öÍæ¼Ò
       item: DIRT
       damage: 2
+      pos: 7
+      function: null

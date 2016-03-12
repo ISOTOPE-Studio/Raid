@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -75,15 +76,22 @@ public class UpdateGUI extends BukkitRunnable {
 				if (function.contains("tp ")) {
 					final int instance = Integer.parseInt(function.substring(3));
 					handler[pos] = new ClassGUI.OptionClickEventHandler() {
+						@SuppressWarnings("deprecation")
 						@Override
 						public void onOptionClick(ClassGUI.OptionClickEvent event) {
 							int limit = data.getInstanceLimit(instance);
 							int num = data.getNumPlayers(instance);
-							if (num < limit) {
-								event.getPlayer().teleport(data.getInstancetp(instance));
-								event.getPlayer().sendMessage(Raid.prefix + "成功传送到副本" + instance);
-							} else {
-								event.getPlayer().sendMessage(Raid.prefix + "副本人数达到限制" + instance);
+							Player player = event.getPlayer();
+							if (player.hasPermission("raid.tp." + instance))
+								if (num < limit) {
+									player.teleport(data.getInstancetp(instance));
+									player.sendTitle("§a传送到", "§c副本" + instance);
+									player.sendMessage(Raid.prefix + "成功传送" + instance);
+								} else {
+									player.sendMessage(Raid.prefix + "副本人数达到限制" + instance);
+								}
+							else{
+								player.sendMessage(Raid.prefix + "你没有权限");
 							}
 						}
 					};
@@ -91,8 +99,6 @@ public class UpdateGUI extends BukkitRunnable {
 			}
 			newGUI.setPleyerList(playerList);
 			newGUI.setHandlerList(handler);
-			// System.out.println("Index" + num + " size" + size + " " +
-			// itemIndexList.toString());
 			Data.gui.add(newGUI);
 		}
 	}

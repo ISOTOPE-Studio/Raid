@@ -1,0 +1,116 @@
+
+#Raid GUI配置文件
+
+#彩色代码: §
+
+#菜单序列，从0开始
+#'0':
+#  #菜单的名字
+#  name: §2测试
+#  #菜单的命令
+#  #输入/raid <菜单序列> 或者 /raid <命令>
+#  command: 'run'
+#  #菜单的行数
+#  column: 2
+#  slot:
+#    #物品列表名字，随意但不重复
+#    a:
+#      #物品显示名字
+#      name: §cGUI1
+#      #物品描述
+#      lore:
+#      - §a第1条a
+#      - §b第2条b
+#      #物品种类，ID或者大写英文名
+#      item: GLASS
+#      #物品damage，如玻璃的不同颜色
+#      damage: 0
+#      #物品所在位置，从0开始数
+#      pos: 0
+#      #物品点击效果
+#      #null: 无效果
+#      #tp <副本ID>: 传送到副本
+#      function: tp 1
+#    b:
+#      name: §cGUI2
+#      lore:
+#      #物品描述 {副本ID} 为显示副本内玩家数
+#      - §a{1}个玩家
+#      item: DIRT
+#      damage: 2
+#      pos: 1
+#    C:
+#      name: §cGUI2
+#      lore:
+#      - §a{1}个玩家
+#      item: WOOL
+#      damage: 2
+#      pos: 15#
+'0':
+  name: §2测试
+  command: 'run'
+  column: 2
+  slot:
+    a:
+      name: §cGUI1
+      lore:
+      - §a第1条a
+      - §b第2条b
+      - §c第3条c
+      - §d第4条d
+      - §e第5条e
+      - §1第6条1
+      - §2第7条2
+      - §3第8条3
+      - §4第9条5
+      - §5第10条5
+      item: GLASS
+      damage: 0
+      pos: 0
+      function: tp 1
+    b:
+      name: §cGUI2
+      lore:
+      - §a{1}个玩家
+      item: DIRT
+      damage: 2
+      pos: 1
+      function: null
+    C:
+      name: §cGUI2
+      lore:
+      - §a{1}个玩家
+      item: WOOL
+      damage: 2
+      pos: 15
+      function: null
+'1':
+  name: §2测试2
+  command: '1'
+  column: 1
+  slot:
+    a:
+      name: §cGUI1
+      lore:
+      - §a第1条a
+      - §b第2条b
+      - §c第3条c
+      - §d第4条d
+      - §e第5条e
+      - §1第6条1
+      - §2第7条2
+      - §3第8条3
+      - §4第9条5
+      - §5第10条5
+      item: GLASS
+      damage: 0
+      function: tp 1
+      pos: 5
+    b:
+      name: §cGUI2
+      lore:
+      - §a{1}个玩家
+      item: DIRT
+      damage: 2
+      pos: 7
+      function: null

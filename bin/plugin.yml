@@ -4,7 +4,7 @@ main: cc.isotopestudio.Raid.Raid
 author: Mars
 description: Teleporting
 website: http://isotopestudio.cc
-version: 1.0
+version: 2.0
 commands:
   Raid:
     description: Raid Command.
