@@ -22,16 +22,30 @@ public class CommandRaid implements CommandExecutor {
 				player.sendMessage(Raid.prefix + "/raid <数字> 打开菜单");
 				return true;
 			}
+
+			// Custom CMD
+			int index = 0;
+			for (String tempCmd : Data.guiCmd) {
+				if (args[0].equalsIgnoreCase(tempCmd)) {
+					Data.gui.get(index).open(player);
+					return true;
+				}
+				index++;
+			}
+
+			// Normal index
 			int num = 0;
 			try {
 				num = Integer.parseInt(args[0]);
 			} catch (Exception e) {
 				player.sendMessage(Raid.prefix + "/raid <数字> 打开菜单");
+				return true;
 			}
 			try {
 				Data.gui.get(num).open(player);
 			} catch (Exception e) {
 				sender.sendMessage(Raid.prefix + "菜单不存在");
+				return true;
 			}
 			return true;
 		}

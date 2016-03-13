@@ -21,6 +21,12 @@ public class InstanceData {
 		plugin.getInstanceData().set(instance + ".pos1.y", loc.getBlockY());
 		plugin.getInstanceData().set(instance + ".pos1.z", loc.getBlockZ());
 		plugin.getInstanceData().set(instance + ".world", loc.getWorld().getName());
+		if (getInstanceTitle(instance) == null) {
+			plugin.getInstanceData().set(instance + ".title", "null");
+		}
+		if (getInstanceSubtitle(instance) == null) {
+			plugin.getInstanceData().set(instance + ".subtitle", "null");
+		}
 		plugin.saveInstanceData();
 	}
 
@@ -36,6 +42,7 @@ public class InstanceData {
 		plugin.getInstanceData().set(instance + ".pos2.x", loc.getBlockX());
 		plugin.getInstanceData().set(instance + ".pos2.y", loc.getBlockY());
 		plugin.getInstanceData().set(instance + ".pos2.z", loc.getBlockZ());
+		plugin.getInstanceData().set(instance + ".world", loc.getWorld().getName());
 		plugin.saveInstanceData();
 	}
 
@@ -75,7 +82,23 @@ public class InstanceData {
 		plugin.saveInstanceData();
 	}
 
-	public World getInstanceWorld(int instance) {
+	public String getInstanceTitle(int instance) {
+		String title = plugin.getInstanceData().getString(instance + ".title", "null");
+		if (title.equals("null")) {
+			return null;
+		}
+		return title;
+	}
+
+	public String getInstanceSubtitle(int instance) {
+		String subtitle = plugin.getInstanceData().getString(instance + ".subtitle", "null");
+		if (subtitle.equals("null")) {
+			return null;
+		}
+		return subtitle;
+	}
+
+	private World getInstanceWorld(int instance) {
 		World world = plugin.getServer().getWorld(plugin.getInstanceData().getString(instance + ".world"));
 		return world;
 	}

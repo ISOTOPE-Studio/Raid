@@ -32,6 +32,7 @@ public class UpdateGUI extends BukkitRunnable {
 		} catch (Exception e) {
 		}
 		Data.gui = new ArrayList<ClassGUI>();
+		Data.guiCmd = new ArrayList<String>();
 		Set<String> guiName = plugin.getGUIData().getKeys(false);
 		Set<String> keys = plugin.getGUIData().getKeys(true);
 		Iterator<String> it = guiName.iterator();
@@ -39,6 +40,8 @@ public class UpdateGUI extends BukkitRunnable {
 		while (it.hasNext()) {
 			int num = Integer.parseInt(it.next());
 			int size = plugin.getGUIData().getInt(num + ".column") * 9;
+			String cmd = plugin.getGUIData().getString(num + ".command", "" + num);
+			Data.guiCmd.add(cmd);
 			String name = plugin.getGUIData().getString(num + ".name");
 			ClassGUI newGUI = new ClassGUI(name, size, plugin);
 			ArrayList<String> itemIndexList = new ArrayList<String>();
@@ -85,12 +88,15 @@ public class UpdateGUI extends BukkitRunnable {
 							if (player.hasPermission("raid.tp." + instance))
 								if (num < limit) {
 									player.teleport(data.getInstancetp(instance));
-									player.sendTitle("§a传送到", "§c副本" + instance);
-									player.sendMessage(Raid.prefix + "成功传送" + instance);
-								} else {
+									if (data.getInstanceTitle(instance) != null
+											&& data.getInstanceSubtitle(instance) != null) {
+										player.sendTitle(data.getInstanceTitle(instance),
+												data.getInstanceSubtitle(instance));
+									}
+									} else {
 									player.sendMessage(Raid.prefix + "副本人数达到限制" + instance);
 								}
-							else{
+							else {
 								player.sendMessage(Raid.prefix + "你没有权限");
 							}
 						}
