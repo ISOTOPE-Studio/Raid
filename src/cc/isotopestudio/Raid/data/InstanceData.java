@@ -58,6 +58,7 @@ public class InstanceData {
 		plugin.getInstanceData().set(instance + ".tp.x", loc.getBlockX());
 		plugin.getInstanceData().set(instance + ".tp.y", loc.getBlockY());
 		plugin.getInstanceData().set(instance + ".tp.z", loc.getBlockZ());
+		plugin.getInstanceData().set(instance + ".tp.yaw", loc.getYaw());
 		plugin.saveInstanceData();
 	}
 
@@ -65,7 +66,8 @@ public class InstanceData {
 		double x = getInstanceValue(instance, "tp.x");
 		double y = getInstanceValue(instance, "tp.y");
 		double z = getInstanceValue(instance, "tp.z");
-		Location loc = new Location(getInstanceWorld(instance), x, y, z);
+		float yaw = (float) plugin.getInstanceData().getDouble(instance + ".tp.yaw");
+		Location loc = new Location(getInstanceWorld(instance), x + 0.5, y, z + 0.5, yaw, 0);
 		return loc;
 	}
 
