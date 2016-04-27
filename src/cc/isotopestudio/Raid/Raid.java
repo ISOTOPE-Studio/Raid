@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitTask;
 import cc.isotopestudio.Raid.command.CommandRaid;
 import cc.isotopestudio.Raid.command.CommandRaidadmin;
 import cc.isotopestudio.Raid.task.UpdateGUI;
+import cc.isotopestudio.Raid.task.UpdatePlayerData;
 
 public class Raid extends JavaPlugin {
 
@@ -50,11 +51,20 @@ public class Raid extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-		
+		try {
+			getPlayerData().save(playerDataFile);
+		} catch (IOException e) {
+			getLogger().info("玩家文件出错！");
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+
 		this.getCommand("raid").setExecutor(new CommandRaid());
 		this.getCommand("raidadmin").setExecutor(new CommandRaidadmin(this));
+
 		int freq = getConfig().getInt("update", 20);
-		BukkitTask task = new UpdateGUI(this).runTaskTimer(this, 20, freq);
+		new UpdateGUI(this).runTaskTimer(this, 20, freq);
+		new UpdatePlayerData(this).runTaskTimer(this, 100, 20 * 60 * 60);
 
 		getLogger().info("Raid 成功加载!");
 		getLogger().info("Raid 由ISOTOPE Studio制作!");
@@ -64,7 +74,8 @@ public class Raid extends JavaPlugin {
 	public void onReload() {
 		reloadGUIData();
 		reloadInstanceData();
-		BukkitTask task = new UpdateGUI(this).runTaskTimer(this, 20, 20);
+		reloadPlayerData();
+		new UpdateGUI(this).runTaskTimer(this, 20, 20);
 		getLogger().info("Raid 成功加载!");
 		getLogger().info("Raid 由ISOTOPE Studio制作!");
 		getLogger().info("http://isotopestudio.cc");
@@ -129,6 +140,42 @@ public class Raid extends JavaPlugin {
 			getInstanceData().save(instanceDataFile);
 		} catch (IOException ex) {
 			getLogger().info("副本文件保存失败！");
+		}
+	}
+
+	private File playerDataFile = null;
+	private FileConfiguration playerData = null;
+
+	public void reloadPlayerData() {
+		if (playerDataFile == null) {
+			playerDataFile = new File(getDataFolder(), "playerData.yml");
+		}
+		playerData = YamlConfiguration.loadConfiguration(playerDataFile);
+	}
+
+	public FileConfiguration getPlayerData() {
+		if (playerData == null) {
+			reloadPlayerData();
+		}
+		return playerData;
+	}
+
+	public void savePlayerData() {
+		if (playerData == null || playerDataFile == null) {
+			return;
+		}
+		try {
+			getPlayerData().save(playerDataFile);
+		} catch (IOException ex) {
+			getLogger().info("玩家文件保存失败！");
+		}
+	}
+
+	public void resetPlayerData() {
+		try {
+			getPlayerData().save(playerDataFile);
+		} catch (IOException ex) {
+			getLogger().info("玩家文件保存失败！");
 		}
 	}
 

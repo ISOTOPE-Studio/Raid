@@ -1,5 +1,6 @@
 package cc.isotopestudio.Raid.data;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -11,6 +12,7 @@ import cc.isotopestudio.Raid.Raid;
 
 public class InstanceData {
 	private final Raid plugin;
+	public static HashMap<Integer, HashMap<String, Long>> playerEnter = new HashMap<Integer, HashMap<String, Long>>();
 
 	public InstanceData(Raid plugin) {
 		this.plugin = plugin;
@@ -26,6 +28,15 @@ public class InstanceData {
 		}
 		if (getInstanceSubtitle(instance) == null) {
 			plugin.getInstanceData().set(instance + ".subtitle", "null");
+		}
+		if (getInstanceLvLimit(instance) < 0) {
+			plugin.getInstanceData().set(instance + ".level", -1);
+		}
+		if (getInstanceInterval(instance) < 0) {
+			plugin.getInstanceData().set(instance + ".interval", -1);
+		}
+		if (getInstanceDayLimit(instance) < 0) {
+			plugin.getInstanceData().set(instance + ".daylimit", -1);
 		}
 		plugin.saveInstanceData();
 	}
@@ -98,6 +109,18 @@ public class InstanceData {
 			return null;
 		}
 		return subtitle;
+	}
+
+	public int getInstanceLvLimit(int instance) {
+		return plugin.getInstanceData().getInt(instance + ".level", -1);
+	}
+
+	public int getInstanceInterval(int instance) {
+		return plugin.getInstanceData().getInt(instance + ".interval", -1);
+	}
+
+	public int getInstanceDayLimit(int instance) {
+		return plugin.getInstanceData().getInt(instance + ".daylimit", -1);
 	}
 
 	private World getInstanceWorld(int instance) {

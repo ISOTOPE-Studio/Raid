@@ -1,6 +1,8 @@
 package cc.isotopestudio.Raid.task;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -48,10 +50,8 @@ public class UpdateGUI extends BukkitRunnable {
 			OptionClickEventHandler[] handler = new OptionClickEventHandler[size];
 			while (keyIt.hasNext()) {
 				String temp = keyIt.next();
-				// System.out.println(temp);
 				String[] tempKey = temp.split("\\.");
 				if (tempKey.length == 3 && tempKey[1].equals("slot")) {
-					// System.out.println(tempKey[0] + tempKey[1] + tempKey[2]);
 					itemIndexList.add(tempKey[2]);
 				}
 				if (temp.equals((num + 1) + "")) {
@@ -85,19 +85,47 @@ public class UpdateGUI extends BukkitRunnable {
 							int limit = data.getInstanceLimit(instance);
 							int num = data.getNumPlayers(instance);
 							Player player = event.getPlayer();
-							if (player.hasPermission("raid.tp." + instance))
-								if (num < limit) {
-									player.teleport(data.getInstancetp(instance));
-									if (data.getInstanceTitle(instance) != null
-											&& data.getInstanceSubtitle(instance) != null) {
-										player.sendTitle(data.getInstanceTitle(instance),
-												data.getInstanceSubtitle(instance));
-									}
-									} else {
-									player.sendMessage(Raid.prefix + "副本人数达到限制" + instance);
-								}
-							else {
+							if (!player.hasPermission("raid.tp." + instance)) {
 								player.sendMessage(Raid.prefix + "你没有权限");
+								return;
+							}
+							if (player.getLevel() < data.getInstanceLvLimit(instance)) {
+								player.sendTitle("§c无法进入", "§a你的等级不够，需要" + data.getInstanceLvLimit(instance) + "级");
+								return;
+							}
+							if (num >= limit) {
+								player.sendMessage(Raid.prefix + "副本人数达到限制");
+								return;
+							}
+							if (InstanceData.playerEnter.get(instance) == null) {
+								InstanceData.playerEnter.put(instance, new HashMap<String, Long>());
+							}
+							if (data.getInstanceDayLimit(instance) != -1
+									&& plugin.getPlayerData().getInt(instance + "." + player.getName(), -100) >= data
+											.getInstanceDayLimit(instance)) {
+								player.sendTitle("§c无法进入", "§a今天已达到进入此副本的限制" + data.getInstanceDayLimit(instance));
+								return;
+							}
+							long now = new Date().getTime();
+							if (InstanceData.playerEnter.get(instance).get(player.getName()) != null) {
+								long last = InstanceData.playerEnter.get(instance).get(player.getName());
+								int interval = data.getInstanceInterval(instance) * 60 * 1000;
+								System.out.print(now);
+								System.out.print(last);
+								System.out.print(interval);
+								if (last + interval > now) {
+									player.sendTitle("§c无法进入",
+											"§a你还需要等待" + (int) (((last + interval - now) / 1000.0 / 60) + 0.5) + "分钟");
+									return;
+								}
+							}
+							InstanceData.playerEnter.get(instance).put(player.getName(), now);
+							plugin.getPlayerData().set(instance + "." + player.getName(),
+									plugin.getPlayerData().getInt(instance + "." + player.getName(), 0) + 1);
+							plugin.savePlayerData();
+							player.teleport(data.getInstancetp(instance));
+							if (data.getInstanceTitle(instance) != null && data.getInstanceSubtitle(instance) != null) {
+								player.sendTitle(data.getInstanceTitle(instance), data.getInstanceSubtitle(instance));
 							}
 						}
 					};
@@ -107,6 +135,7 @@ public class UpdateGUI extends BukkitRunnable {
 			newGUI.setHandlerList(handler);
 			Data.gui.add(newGUI);
 		}
+
 	}
 
 	@SuppressWarnings("deprecation")
