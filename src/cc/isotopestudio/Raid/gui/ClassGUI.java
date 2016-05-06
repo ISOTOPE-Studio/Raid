@@ -83,7 +83,7 @@ public class ClassGUI implements Listener {
 			for (int line = 0; line < lore.size(); line++) {
 				String temp = lore.get(line);
 				if (temp.contains("{") && temp.contains("}")) {
-					int start = 0, end = 0;
+					int start = -1, end = -1;
 					for (int pos = 0; pos < temp.length(); pos++) {
 						if (temp.charAt(pos) == '{') {
 							start = pos + 1;
@@ -92,15 +92,28 @@ public class ClassGUI implements Listener {
 							end = pos;
 						}
 					}
+					String substring = temp.substring(start, end);
 					int instance = -1;
-					try {
-						instance = Integer.parseInt(temp.substring(start, end));
-					} catch (Exception e) {
+					if (substring.contains("|time")) {
+						end = substring.indexOf("|");
+						try {
+							instance = Integer.parseInt(substring.substring(0, end));
+						} catch (Exception e) {
+							continue;
+						}
+						InstanceData data = new InstanceData(plugin);
+						temp = temp.replace("{" + substring + "}",
+								"" + (data.getRemainTime(instance) < 0 ? "Î´¿ªÊ¼" : data.getRemainTime(instance) + "Ãë"));
 
+					} else {
+						try {
+							instance = Integer.parseInt(substring);
+						} catch (Exception e) {
+							continue;
+						}
+						InstanceData data = new InstanceData(plugin);
+						temp = temp.replace("{" + substring + "}", "" + data.getNumPlayers(instance));
 					}
-					InstanceData data = new InstanceData(plugin);
-					temp = temp.replace("{" + temp.substring(start, end) + "}", "" + data.getNumPlayers(instance));
-					System.out.println(temp);
 					lore.set(line, temp);
 				}
 			}

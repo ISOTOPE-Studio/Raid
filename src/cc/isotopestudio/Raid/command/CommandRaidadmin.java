@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import cc.isotopestudio.Raid.Raid;
-import cc.isotopestudio.Raid.data.Data;
 import cc.isotopestudio.Raid.data.InstanceData;
 
 public class CommandRaidadmin implements CommandExecutor {
@@ -40,8 +39,8 @@ public class CommandRaidadmin implements CommandExecutor {
 				sender.sendMessage(Raid.prefix + "/raidadmin <副本ID> pos2 - 设置第二个坐标点");
 				sender.sendMessage(Raid.prefix + "/raidadmin <副本ID> tp - 设置传送点");
 				sender.sendMessage(Raid.prefix + "/raidadmin <副本ID> limit <数量> - 设置副本玩家限制");
+				sender.sendMessage(Raid.prefix + "/raidadmin <副本ID> time <数量> - 设置副本时间限制");
 				sender.sendMessage(Raid.prefix + "/raidadmin reload - 重载配置文件");
-
 				return true;
 			}
 			int num = 0;
@@ -53,24 +52,34 @@ public class CommandRaidadmin implements CommandExecutor {
 				}
 			} catch (Exception e) {
 				sender.sendMessage(Raid.prefix + args[0] + "不是一个有效的数字");
+				return true;
 			}
 			Location loc = ((Player) sender).getLocation();
 			InstanceData data = new InstanceData(plugin);
 			if (args[1].equalsIgnoreCase("pos1")) {
-				data.setInstancePos1(num, loc);
+				data.setPos1(num, loc);
 				sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的第一个坐标");
+				return true;
 			}
 			if (args[1].equalsIgnoreCase("pos2")) {
-				data.setInstancePos2(num, loc);
+				data.setPos2(num, loc);
 				sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的第二个坐标");
+				return true;
 			}
 			if (args[1].equalsIgnoreCase("tp")) {
-				data.setInstancetp(num, loc);
+				data.settp(num, loc);
 				sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的进入传送点");
+				return true;
 			}
 			if (args[1].equalsIgnoreCase("limit")) {
-				data.setInstanceLimit(num, Integer.parseInt(args[2]));
+				data.setLimit(num, Integer.parseInt(args[2]));
 				sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的玩家限制");
+				return true;
+			}
+			if (args[1].equalsIgnoreCase("time")) {
+				data.setTimeLimit(num, Integer.parseInt(args[2]));
+				sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的时间限制");
+				return true;
 			}
 			return true;
 		}

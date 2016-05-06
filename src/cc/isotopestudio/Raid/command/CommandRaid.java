@@ -41,12 +41,13 @@ public class CommandRaid implements CommandExecutor {
 				player.sendMessage(Raid.prefix + "/raid <数字> 打开菜单");
 				return true;
 			}
+			Data.gui.get(num).open(player);
+			/*
 			try {
-				Data.gui.get(num).open(player);
 			} catch (Exception e) {
 				sender.sendMessage(Raid.prefix + "菜单不存在");
 				return true;
-			}
+			}*/
 			return true;
 		}
 		return false;

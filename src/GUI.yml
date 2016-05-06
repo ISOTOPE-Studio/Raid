@@ -35,7 +35,9 @@
 #      name: §cGUI2
 #      lore:
 #      #物品描述 {副本ID} 为显示副本内玩家数
+#      #物品描述 {副本ID|time} 为显示副本剩余时间
 #      - §a{1}个玩家
+#      - §a时间:{1|time}
 #      item: DIRT
 #      damage: 2
 #      pos: 1

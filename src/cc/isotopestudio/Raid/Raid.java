@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import cc.isotopestudio.Raid.command.CommandRaid;
 import cc.isotopestudio.Raid.command.CommandRaidadmin;
+import cc.isotopestudio.Raid.listener.JoinListener;
 import cc.isotopestudio.Raid.task.UpdateGUI;
 import cc.isotopestudio.Raid.task.UpdatePlayerData;
 
@@ -58,7 +59,10 @@ public class Raid extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-
+		
+		PluginManager pm = this.getServer().getPluginManager();
+		pm.registerEvents(new JoinListener(this), this);
+		
 		this.getCommand("raid").setExecutor(new CommandRaid());
 		this.getCommand("raidadmin").setExecutor(new CommandRaidadmin(this));
 
@@ -172,11 +176,10 @@ public class Raid extends JavaPlugin {
 	}
 
 	public void resetPlayerData() {
-		try {
-			getPlayerData().save(playerDataFile);
-		} catch (IOException ex) {
-			getLogger().info("玩家文件保存失败！");
+		for (String key : getPlayerData().getKeys(false)) {
+			getPlayerData().set(key, null);
 		}
+		savePlayerData();
 	}
 
 }
