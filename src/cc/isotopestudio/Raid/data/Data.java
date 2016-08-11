@@ -1,12 +1,12 @@
 package cc.isotopestudio.Raid.data;
 
-import java.util.ArrayList;
-
 import cc.isotopestudio.Raid.gui.ClassGUI;
 
+import java.util.ArrayList;
+
 public class Data {
-	
-	public static ArrayList<ClassGUI> gui;
-	public static ArrayList<String> guiCmd;
+
+    public static ArrayList<ClassGUI> gui;
+    public static ArrayList<String> guiCmd;
 
 }
