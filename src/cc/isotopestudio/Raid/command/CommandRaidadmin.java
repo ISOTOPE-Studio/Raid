@@ -54,29 +54,28 @@ public class CommandRaidadmin implements CommandExecutor {
                 return true;
             }
             Location loc = ((Player) sender).getLocation();
-            InstanceData data = new InstanceData(plugin);
             if (args[1].equalsIgnoreCase("pos1")) {
-                data.setPos1(num, loc);
+                InstanceData.setPos1(num, loc);
                 sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的第一个坐标");
                 return true;
             }
             if (args[1].equalsIgnoreCase("pos2")) {
-                data.setPos2(num, loc);
+                InstanceData.setPos2(num, loc);
                 sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的第二个坐标");
                 return true;
             }
             if (args[1].equalsIgnoreCase("tp")) {
-                data.settp(num, loc);
+                InstanceData.settp(num, loc);
                 sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的进入传送点");
                 return true;
             }
             if (args[1].equalsIgnoreCase("limit")) {
-                data.setLimit(num, Integer.parseInt(args[2]));
+                InstanceData.setLimit(num, Integer.parseInt(args[2]));
                 sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的玩家限制");
                 return true;
             }
             if (args[1].equalsIgnoreCase("time")) {
-                data.setTimeLimit(num, Integer.parseInt(args[2]));
+                InstanceData.setTimeLimit(num, Integer.parseInt(args[2]));
                 sender.sendMessage(Raid.prefix + "成功设置副本" + args[0] + "的时间限制");
                 return true;
             }

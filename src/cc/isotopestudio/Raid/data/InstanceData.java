@@ -1,6 +1,5 @@
 package cc.isotopestudio.Raid.data;
 
-import cc.isotopestudio.Raid.Raid;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -9,15 +8,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static cc.isotopestudio.Raid.Raid.plugin;
+
 public class InstanceData {
-    private final Raid plugin;
-    public static final HashMap<Integer, HashMap<String, Long>> playerEnter = new HashMap<Integer, HashMap<String, Long>>();
+    public static final HashMap<Integer, HashMap<String, Long>> playerEnter = new HashMap<>();
 
-    public InstanceData(Raid plugin) {
-        this.plugin = plugin;
-    }
-
-    public void setPos1(int instance, Location loc) {
+    public static void setPos1(int instance, Location loc) {
         plugin.getInstanceData().set(instance + ".pos1.x", loc.getBlockX());
         plugin.getInstanceData().set(instance + ".pos1.y", loc.getBlockY());
         plugin.getInstanceData().set(instance + ".pos1.z", loc.getBlockZ());
@@ -43,14 +39,14 @@ public class InstanceData {
         plugin.saveInstanceData();
     }
 
-    private Location getPos1(int instance) {
+    private static Location getPos1(int instance) {
         double x = getValue(instance, "pos1.x");
         double y = getValue(instance, "pos1.y");
         double z = getValue(instance, "pos1.z");
         return new Location(getWorld(instance), x, y, z);
     }
 
-    public void setPos2(int instance, Location loc) {
+    public static void setPos2(int instance, Location loc) {
         plugin.getInstanceData().set(instance + ".pos2.x", loc.getBlockX());
         plugin.getInstanceData().set(instance + ".pos2.y", loc.getBlockY());
         plugin.getInstanceData().set(instance + ".pos2.z", loc.getBlockZ());
@@ -58,14 +54,14 @@ public class InstanceData {
         plugin.saveInstanceData();
     }
 
-    private Location getPos2(int instance) {
+    private static Location getPos2(int instance) {
         double x = getValue(instance, "pos2.x");
         double y = getValue(instance, "pos2.y");
         double z = getValue(instance, "pos2.z");
         return new Location(getWorld(instance), x, y, z);
     }
 
-    public void settp(int instance, Location loc) {
+    public static void settp(int instance, Location loc) {
         plugin.getInstanceData().set(instance + ".tp.x", loc.getBlockX());
         plugin.getInstanceData().set(instance + ".tp.y", loc.getBlockY());
         plugin.getInstanceData().set(instance + ".tp.z", loc.getBlockZ());
@@ -73,7 +69,7 @@ public class InstanceData {
         plugin.saveInstanceData();
     }
 
-    public Location gettp(int instance) {
+    public static Location gettp(int instance) {
         double x = getValue(instance, "tp.x");
         double y = getValue(instance, "tp.y");
         double z = getValue(instance, "tp.z");
@@ -81,39 +77,35 @@ public class InstanceData {
         return new Location(getWorld(instance), x + 0.5, y, z + 0.5, yaw, 0);
     }
 
-    public String getName(int instance) {
-        return plugin.getInstanceData().getString(instance + ".name");
-    }
-
-    public int getLimit(int instance) {
+    public static int getLimit(int instance) {
         return plugin.getInstanceData().getInt(instance + ".limit", Integer.MAX_VALUE);
     }
 
-    public void setLimit(int instance, int limit) {
+    public static void setLimit(int instance, int limit) {
         plugin.getInstanceData().set(instance + ".limit", limit);
         plugin.saveInstanceData();
     }
 
-    public void setTimeLimit(int instance, int minute) {
+    public static void setTimeLimit(int instance, int minute) {
         plugin.getInstanceData().set(instance + ".time", minute);
         plugin.saveInstanceData();
     }
 
-    private int getTimeLimit(int instance) {
+    private static int getTimeLimit(int instance) {
         return plugin.getInstanceData().getInt(instance + ".time", 10);
     }
 
-    public void setStartTime(int instance) {
+    public static void setStartTime(int instance) {
         plugin.getInstanceData().set(instance + ".start", System.currentTimeMillis());
         plugin.saveInstanceData();
     }
 
-    public void resetStartTime(int instance) {
+    public static void resetStartTime(int instance) {
         plugin.getInstanceData().set(instance + ".start", -1);
         plugin.saveInstanceData();
     }
 
-    public int getRemainTime(int instance) {
+    public static int getRemainTime(int instance) {
         long start = plugin.getInstanceData().getLong(instance + ".start");
         if (start == -1) {
             return -1;
@@ -123,7 +115,7 @@ public class InstanceData {
         return (int) (start / 1000 - now / 1000) + getTimeLimit(instance) * 60;
     }
 
-    public String getTitle(int instance) {
+    public static String getTitle(int instance) {
         String title = plugin.getInstanceData().getString(instance + ".title", "null");
         if (title.equals("null")) {
             return null;
@@ -131,7 +123,7 @@ public class InstanceData {
         return title;
     }
 
-    public String getSubtitle(int instance) {
+    public static String getSubtitle(int instance) {
         String subtitle = plugin.getInstanceData().getString(instance + ".subtitle", "null");
         if (subtitle.equals("null")) {
             return null;
@@ -139,27 +131,27 @@ public class InstanceData {
         return subtitle;
     }
 
-    public int getLvLimit(int instance) {
+    public static int getLvLimit(int instance) {
         return plugin.getInstanceData().getInt(instance + ".level", -1);
     }
 
-    public int getEnterInterval(int instance) {
+    public static int getEnterInterval(int instance) {
         return plugin.getInstanceData().getInt(instance + ".interval", -1);
     }
 
-    public int getDayLimit(int instance) {
+    public static int getDayLimit(int instance) {
         return plugin.getInstanceData().getInt(instance + ".daylimit", -1);
     }
 
-    public World getWorld(int instance) {
+    public static World getWorld(int instance) {
         return plugin.getServer().getWorld(plugin.getInstanceData().getString(instance + ".world"));
     }
 
-    private int getValue(int instance, String value) {
+    private static int getValue(int instance, String value) {
         return plugin.getInstanceData().getInt(instance + "." + value, -1);
     }
 
-    public int getNumPlayers(int instance) {
+    public static int getNumPlayers(int instance) {
         Location pos1 = getPos1(instance);
         Location pos2 = getPos2(instance);
         int num = 0;

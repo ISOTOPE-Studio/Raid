@@ -42,10 +42,9 @@ public class ClassGUI implements Listener {
         willDestory = false;
     }
 
-    public ClassGUI setOption(int position, ItemStack icon, String name, String... info) {
+    public void setOption(int position, ItemStack icon, String name, String... info) {
         optionNames[position] = name;
         optionIcons[position] = setItemNameAndLore(icon, name, info);
-        return this;
     }
 
     public void open(Player player) {
@@ -100,18 +99,16 @@ public class ClassGUI implements Listener {
                         } catch (Exception e) {
                             continue;
                         }
-                        InstanceData data = new InstanceData(plugin);
 
                         temp = temp.replace("{" + substring + "}",
-                                "" + (data.getRemainTime(instance) < 0 ? "未开始" : data.getRemainTime(instance) + "秒"));
+                                "" + (InstanceData.getRemainTime(instance) < 0 ? "未开始" : InstanceData.getRemainTime(instance) + "秒"));
                     } else {
                         try {
                             instance = Integer.parseInt(substring);
                         } catch (Exception e) {
                             continue;
                         }
-                        InstanceData data = new InstanceData(plugin);
-                        temp = temp.replace("{" + substring + "}", "" + data.getNumPlayers(instance));
+                        temp = temp.replace("{" + substring + "}", "" + InstanceData.getNumPlayers(instance));
                     }
                     lore.set(line, temp);
                 }
@@ -131,7 +128,7 @@ public class ClassGUI implements Listener {
             }
             if (handler[slot] != null && optionNames[slot] != null) {
                 Plugin plugin = this.plugin;
-                OptionClickEvent e = new OptionClickEvent((Player) event.getWhoClicked(), slot, optionNames[slot]);
+                OptionClickEvent e = new OptionClickEvent((Player) event.getWhoClicked());
                 handler[slot].onOptionClick(e);
                 if (e.willClose()) {
                     final Player p = (Player) event.getWhoClicked();
@@ -160,49 +157,18 @@ public class ClassGUI implements Listener {
 
     public class OptionClickEvent {
         private final Player player;
-        private int position;
-        private String name;
-        private boolean close;
-        private boolean Destory;
+        private final boolean close;
 
-        public OptionClickEvent(Player player, int position, String name) {
+        OptionClickEvent(Player player) {
             this.player = player;
-            this.position = position;
-            this.name = name;
             this.close = true;
-            this.Destory = false;
-        }
-
-        public OptionClickEvent(Player player) {
-            this.player = player;
         }
 
         public Player getPlayer() {
             return player;
         }
-
-        public int getPosition() {
-            return position;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public boolean willClose() {
+        boolean willClose() {
             return close;
-        }
-
-        public boolean willDestroy() {
-            return Destory;
-        }
-
-        public void setWillClose(boolean close) {
-            this.close = close;
-        }
-
-        public void setWillDestroy(boolean Destory) {
-            this.Destory = Destory;
         }
     }
 

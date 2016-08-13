@@ -1,19 +1,15 @@
 package cc.isotopestudio.Raid.data;
 
-import cc.isotopestudio.Raid.Raid;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import static cc.isotopestudio.Raid.Raid.plugin;
+
 public class PlayerData {
-    private final Raid plugin;
 
-    public PlayerData(Raid plugin) {
-        this.plugin = plugin;
-    }
-
-    public void storePlayerLocation(Player player) {
+    public static void storePlayerLocation(Player player) {
         plugin.getPlayerData().set(player.getName() + ".location.X", player.getLocation().getBlockX());
         plugin.getPlayerData().set(player.getName() + ".location.Y", player.getLocation().getBlockY());
         plugin.getPlayerData().set(player.getName() + ".location.Z", player.getLocation().getBlockZ());
@@ -22,7 +18,7 @@ public class PlayerData {
     }
 
     @SuppressWarnings("deprecation")
-    public void teleportToLocation(Player player) {
+    public static void teleportToLocation(Player player) {
         int x = plugin.getPlayerData().getInt(player.getName() + ".location.X", -1);
         int y = plugin.getPlayerData().getInt(player.getName() + ".location.Y", -1);
         int z = plugin.getPlayerData().getInt(player.getName() + ".location.Z", -1);

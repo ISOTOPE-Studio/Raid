@@ -1,6 +1,5 @@
 package cc.isotopestudio.Raid.listener;
 
-import cc.isotopestudio.Raid.Raid;
 import cc.isotopestudio.Raid.data.PlayerData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,15 +8,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinListener implements Listener {
 
-    private final Raid plugin;
-
-    public JoinListener(Raid plugin) {
-        this.plugin = plugin;
-    }
-
     @EventHandler
     public void onJoin(PlayerJoinEvent event) { // Add Permission
         Player player = event.getPlayer();
-        new PlayerData(plugin).teleportToLocation(player);
+        PlayerData.teleportToLocation(player);
     }
 }

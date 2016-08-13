@@ -1,17 +1,13 @@
 package cc.isotopestudio.Raid.task;
 
-import cc.isotopestudio.Raid.Raid;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class UpdatePlayerData extends BukkitRunnable {
-    private final Raid plugin;
+import static cc.isotopestudio.Raid.Raid.plugin;
 
-    public UpdatePlayerData(Raid plugin) {
-        this.plugin = plugin;
-    }
+public class UpdatePlayerData extends BukkitRunnable {
 
     @Override
     public void run() {

@@ -2,13 +2,11 @@ package cc.isotopestudio.Raid;
 
 import cc.isotopestudio.Raid.command.CommandRaid;
 import cc.isotopestudio.Raid.command.CommandRaidadmin;
-import cc.isotopestudio.Raid.listener.JoinListener;
 import cc.isotopestudio.Raid.task.UpdateGUI;
 import cc.isotopestudio.Raid.task.UpdatePlayerData;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -28,10 +26,11 @@ public class Raid extends JavaPlugin {
         }
     }
 
-    String FileVersion = "1";
+    public static Raid plugin;
 
     @Override
     public void onEnable() {
+        plugin = this;
         getLogger().info("加载配置文件中");
 
         createFile();
@@ -57,16 +56,16 @@ public class Raid extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-
+        /*
         PluginManager pm = this.getServer().getPluginManager();
-        pm.registerEvents(new JoinListener(this), this);
-
+        pm.registerEvents(new JoinListener(), this);
+        */
         this.getCommand("raid").setExecutor(new CommandRaid());
         this.getCommand("raidadmin").setExecutor(new CommandRaidadmin(this));
 
         int freq = getConfig().getInt("update", 20);
-        new UpdateGUI(this).runTaskTimer(this, 20, freq);
-        new UpdatePlayerData(this).runTaskTimer(this, 100, 20 * 60 * 60);
+        new UpdateGUI().runTaskTimer(this, 20, freq);
+        new UpdatePlayerData().runTaskTimer(this, 100, 20 * 60 * 60);
 
         getLogger().info("Raid 成功加载!");
         getLogger().info("Raid 由ISOTOPE Studio制作!");
